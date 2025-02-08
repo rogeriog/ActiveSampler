@@ -23,14 +23,15 @@ ActiveSampler can be installed in two primary ways:
 ```
 This will install the package and its dependencies (NumPy, pandas, scikit-learn, XGBoost, SciPy).
 
-2. From Source (from the project directory):
+
+**2. From Source (from the project directory):**
 
 If you have cloned the repository or have the project directory, you can install directly from the project root:
-
-git clone https://github.com/yourusername/active_sampler.git  # Replace with your repository URL
+```
+git clone https://github.com/rogeriog/active_sampler.git  # Replace with your repository URL
 cd active_sampler
 pip install .
-
+```
 This method is useful for development or if you want to modify the source code.  It installs the package in "editable" mode, so changes to the source code are immediately reflected without needing to reinstall.
 
 ## Usage
