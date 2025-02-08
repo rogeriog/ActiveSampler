@@ -2,146 +2,193 @@
 
 ActiveSampler is a Python package designed to facilitate active learning workflows specifically tailored for experimental design in chemistry and materials science. By intelligently selecting the most informative data points for labeling, ActiveSampler aims to optimize experiments, reduce costs, and accelerate discovery in these fields.
 
-## Table of Contents
+## Features
 
-1. [Introduction](#introduction)
-2. [Key Features](#key-features)
-3. [Implementation Details](#implementation-details)
-   - [Data Loading and Preprocessing](#data-loading-and-preprocessing)
-   - [Sampling Grid Generation and Constraints](#sampling-grid-generation-and-constraints)
-   - [Model Training and Prediction Collection](#model-training-and-prediction-collection)
-   - [Uncertainty Estimation](#uncertainty-estimation)
-   - [Objective Function Computation](#objective-function-computation)
-   - [Acquisition Function Computation](#acquisition-function-computation)
-   - [Active Learning Loop](#active-learning-loop)
-4. [Strengths](#strengths)
-5. [Use Cases in Chemistry and Materials Science](#use-cases-in-chemistry-and-materials-science)
-6. [Conclusion](#conclusion)
+- **Model Training and Prediction**: Supports both classification and regression tasks using models like Logistic Regression, Random Forest, and XGBoost.
+- **Uncertainty Calculation**: Computes uncertainty for classification using entropy and for regression using variance.
+- **Objective Function Evaluation**: Allows custom objective functions to guide the selection of samples.
+- **Diversity and Acquisition**: Incorporates diversity measures and acquisition functions to balance exploration and exploitation.
+- **Grid Sampling and Constraints**: Generates sampling grids and applies constraints to ensure valid experimental designs.
+- **Active Learning Selection**: Selects the most informative samples to enhance model performance with customizable weights for objective, uncertainty, and diversity.
 
----
+## Installation
 
-## Introduction
+ActiveSampler can be installed in two primary ways:
 
-In experimental sciences like chemistry and materials science, conducting experiments can be time-consuming and costly. ActiveSampler addresses this challenge by implementing an active learning framework that strategically selects the most informative experiments to perform next. By combining machine learning models with statistical methods, it helps researchers focus on experiments that are likely to yield the most valuable information, thereby optimizing resource utilization and accelerating innovation.
+**1. Using pip (from PyPI - Recommended):**
 
-## Key Features
+   This is the easiest and recommended method. Install directly from the Python Package Index (PyPI):
+```bash
+   pip install active_sampler
+```
+This will install the package and its dependencies (NumPy, pandas, scikit-learn, XGBoost, SciPy).
 
-- **Customizable Data Handling**: Robust functions for loading, preprocessing, and encoding experimental data.
-- **Adaptive Sampling Grid**: Generates sampling grids with user-defined constraints and variable-specific granularity.
-- **Multiple Model Integration**: Supports various machine learning models, including Logistic Regression, Random Forest, and XGBoost.
-- **Statistical Uncertainty Estimation**: Implements methods to estimate model uncertainty, crucial for experimental decision-making.
-- **Flexible Objective Functions**: Allows for user-defined objectives to guide the selection of experiments.
-- **Acquisition Function Computation**: Combines objective scores, uncertainty, and entropy gain to prioritize experiments.
-- **Iterative Active Learning Loop**: Continuously updates models and selects new experiments based on the latest data.
-- **Performance Tracking and Visualization**: Monitors model performance over iterations with visual outputs.
+2. From Source (from the project directory):
 
-## Implementation Details
+If you have cloned the repository or have the project directory, you can install directly from the project root:
 
-### Data Loading and Preprocessing
+git clone https://github.com/yourusername/active_sampler.git  # Replace with your repository URL
+cd active_sampler
+pip install .
 
-The `load_and_preprocess_data` function is the foundation for preparing experimental data:
+This method is useful for development or if you want to modify the source code.  It installs the package in "editable" mode, so changes to the source code are immediately reflected without needing to reinstall.
 
-- **Data Importing**: Reads data from CSV files into Pandas DataFrames, ensuring compatibility with various data formats common in experimental datasets.
-- **Column Renaming**: Users can map raw data columns to meaningful feature names, improving code readability and maintainability.
-- **Missing Value Handling**: Offers strategies like dropping incomplete rows or imputing missing values based on context, which is critical in experimental datasets where missing data is common.
-- **Data Cleaning**: Removes duplicates and irrelevant columns, ensuring the dataset is clean and suitable for modeling.
-- **Categorical Encoding**: One-hot encodes categorical variables, converting them into a format that machine learning models can interpret.
-- **Feature-Target Splitting**: Separates the DataFrame into features (`X`) and targets (`y_dict`), accommodating multiple target variables for complex experimental outcomes.
+## Usage
 
-### Sampling Grid Generation and Constraints
+### Example
 
-ActiveSampler generates a sampling grid that represents potential experiments:
+This is an example input data to select new data points in a LARP synthesis, full data on [examples/example1_LARP/input.csv](examples/example1_LARP/input.csv):
 
-- **Grid Generation**: The `generate_sampling_grid` function creates a Cartesian product of feature values, considering both numerical ranges and categorical options.
-- **Variable-Specific Grid Points**: Users can specify the number of grid points for each variable, allowing finer control over important experimental parameters.
-- **Constraint Application**: The `apply_constraints_to_grid` function enables the incorporation of domain knowledge by applying logical constraints to the grid. For example, ensuring that certain chemical additives are only used at specific concentrations.
-- **Grid Reduction**: By applying constraints, the grid size is reduced to only feasible experiments, improving computational efficiency and experimental relevance.
+```csv
+ligand_quantity,ligand_ii_quantity,halogen_alloy_quantity,antisolvent_quantity,structural_response
+10.0,300,0,3000,1
+5.0,300,0,3000,1
+...
+```
+Here is the code to sample these new points:
 
-### Model Training and Prediction Collection
+```python
+from active_sampler import active_sampling, load_and_preprocess_data
 
-The package trains machine learning models to predict experimental outcomes:
+# Define the path to your data file
+filepath = 'input.csv'
 
-- **Model Training**: The `train_models_and_collect_predictions` function trains multiple models for each target variable using K-Fold cross-validation, which enhances the robustness of the predictions.
-- **Model Types**: Supports classification and regression models, accommodating a wide range of experimental measurements (e.g., categorical outcomes like material phases or continuous properties like absorption spectra).
-- **Prediction Collection**: Collects predictions from each model and fold, which are later used for uncertainty estimation and performance evaluation.
-- **Model Selection**: Evaluates models based on performance metrics (e.g., F1 score for classification, RMSE for regression) and retains the best-performing model type for each target variable.
+# Specify target columns and their types
+target_columns = ['structural_response']
+target_types = {
+    'structural_response': 'classification',
+}
+num_classes_dict = {
+    'structural_response': 3
+}
 
-### Uncertainty Estimation
+# Define the objective function as a string
+obj_fn_str = 'structural_response_class_2'
 
-Estimating uncertainty is crucial for identifying which experiments will provide the most information:
+# Load and preprocess data
+X, y_dict = load_and_preprocess_data(
+    filepath,
+    target_columns,
+    target_types,
+)
 
-- **Classification Uncertainty**: Uses entropy of the predicted probability distributions to quantify uncertainty. Higher entropy indicates that the model is less confident about the prediction.
-  - **Entropy Calculation**: For a sample with predicted class probabilities \( p_1, p_2, \ldots, p_K \), entropy \( H \) is computed as:
-    \[
-    H = -\sum_{i=1}^{K} p_i \log(p_i)
-    \]
-- **Regression Uncertainty**: Calculates the variance of predictions across different models, with higher variance indicating greater uncertainty.
-  - **Variance Calculation**: For predictions \( y_1, y_2, \ldots, y_N \) from \( N \) models, variance \( \sigma^2 \) is:
-    \[
-    \sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (y_i - \bar{y})^2
-    \]
-    where \( \bar{y} \) is the mean prediction.
+# Start active learning selection
+active_sampling(
+    X,
+    y_dict,
+    target_types,
+    obj_fn_str,
+    num_classes_dict=num_classes_dict,
+    num_sampling=25,
+    alpha=0.25,  # Objective weight
+    beta=0.25,  # Uncertainty weight
+    gamma=0.5,  # Diversity weight
+    sufix='LARP',
+)
+```
 
-### Objective Function Computation
+### Input Data Format
 
-ActiveSampler allows users to define custom objective functions that reflect their experimental goals:
+The input data should be in CSV format:
 
-- **Expression Parsing**: Users provide an objective function as a string expression involving target variables, such as `'structure_type_class_2 + 0.01 * optical_absorption - 0.01 * particle_size'`.
-- **Variable Mapping**: The `compute_objective` function maps variables in the expression to the corresponding predictions, handling both classification probabilities and regression outputs.
-- **Efficient Evaluation**: Utilizes `numexpr` for fast computation over large datasets, which is essential when dealing with extensive sampling grids.
+```csv
+ligand_quantity,ligand_ii_quantity,halogen_alloy_quantity,antisolvent_quantity,structural_response
+10.0,300,0,3000,1
+5.0,300,0,3000,1
+...
+```
 
-### Acquisition Function Computation
+### `load_and_preprocess_data` Function
 
-The acquisition function guides the selection of the next experiments to perform:
+The `load_and_preprocess_data` function loads, cleans, and prepares your data. It handles renaming, missing values, removing rows/columns, and splitting data into features (X) and targets (y_dict).  See the examples for detailed usage.
 
-- **Components**:
-  - **Objective Score (\( O \))**: Represents how well a sample aligns with the desired experimental outcomes.
-  - **Uncertainty (\( U \))**: Reflects the model's confidence in its predictions for a sample.
-  - **Entropy Gain (\( E \))**: Measures the potential increase in knowledge by selecting a sample, based on its similarity to existing data.
-- **Combination**: The acquisition function \( A \) is computed as:
-  \[
-  A = \alpha \times O + \beta \times U + \gamma \times E
-  \]
-  where \( \alpha, \beta, \gamma \) are user-defined weights that balance the importance of each component.
-- **Normalization**: Each component is normalized to the [0, 1] range to ensure they contribute proportionally.
+**Parameters:** `filepath`, `target_columns`, `target_types`, `column_mapping` (optional), `categorical_cols` (optional), `missing_value_strategy` (optional), `imputation_values` (optional), `rows_to_remove` (optional), `columns_to_remove` (optional), `regex_columns_to_remove` (optional).
 
-### Active Learning Loop
+### `active_sampling` Function Parameters
 
-The core of ActiveSampler is the iterative active learning process:
+- `X`: Feature DataFrame.
+- `y_dict`: Dictionary mapping target names to their Series.
+- `target_types`: Dictionary mapping target names to 'classification' or 'regression'.
+- `obj_fn_str`: String defining the objective function.  References:
+    - Classification: `target_class_i` (e.g., `'structure_type_class_2'`).
+    - Regression: `target` (e.g., `'contact_angle'`).
+    - Normalized Regression: `norm_target` (e.g., `norm_contact_angle`).
+- `sufix`: Suffix for output files.
+- `categorical_cols`: List of categorical columns.
+- `num_classes_dict`: Dictionary mapping classification targets to number of classes.
+- `initial_train_size`: Initial training set size (or `None` for all data).
+- `num_sampling`: Number of samples to select.
+- `alpha`, `beta`, `gamma`: Weights for objective, uncertainty, and diversity.
+- `user_num_grid_points`: Custom grid points per numerical variable (int, 'unique', or dict).
+- `variable_constraints`: Constraints to filter the sampling grid (list of dicts).  Each dict has `conditions`, `assignments`, and optional `mutual_constraint`.
+- `unc_fn_str`: Custom formula for combining uncertainties. References: `target_unc`, `norm_target_unc`.
+- `diversity_settings`: Settings for diversity: `neighbor_distance_metric` (default: 'euclidean'), `same_cluster_penalty` (default: 0.5), `number_of_clusters` (default: 'num_sampling').
 
-1. **Initialization**: Starts with an initial training set (possibly from existing experiments) and a pool of potential experiments from the sampling grid.
-2. **Model Training**: Trains models using the current labeled data to predict experimental outcomes.
-3. **Uncertainty and Objective Evaluation**: Computes uncertainties and objective scores for the unlabeled pool.
-4. **Entropy Gain Calculation**: Assesses the entropy gain for each sample, favoring those that are different from already explored experiments.
-5. **Sample Selection**: Uses the acquisition function to select a batch of samples (experiments) with the highest scores.
-6. **Labeling Simulation**: Simulates the experimental results for the selected samples. In practice, this step would involve performing the experiments and obtaining real measurements.
-7. **Data Update**: Adds the newly labeled data to the training set and removes them from the pool.
-8. **Iteration**: Repeats the process for a specified number of iterations or until the model performance converges.
-9. **Performance Tracking**: Records performance metrics, such as F1 score for classification targets or RMSE for regression targets, over iterations.
-10. **Visualization**: Provides plots to visualize how model performance evolves, aiding in understanding and decision-making.
+### Output
 
-## Strengths
+The `active_sampling` function generates a `.txt` file and a `.csv` file containing the coordinates of the selected samples, sorted by all columns.  See the examples folder for detailed output formats.
 
-- **Domain-Specific Design**: Tailored for experimental design in chemistry and materials science, incorporating features like custom constraints and variable-specific sampling.
-- **Efficiency**: Reduces the number of experiments needed by focusing on the most informative samples, saving time and resources.
-- **Flexibility**: Supports multiple targets and allows for custom objective functions, accommodating complex experimental goals.
-- **Model Robustness**: Utilizes ensemble methods and cross-validation to improve prediction reliability.
-- **Uncertainty-Driven Selection**: Incorporates statistical methods for uncertainty estimation, enhancing the effectiveness of the active learning strategy.
-- **Constraint Handling**: Allows the integration of domain knowledge through constraints, ensuring that suggested experiments are feasible and relevant.
-- **Visualization Tools**: Offers performance tracking and visualization, which are crucial for evaluating progress and making informed decisions.
+### Examples
 
-## Use Cases in Chemistry and Materials Science
+The package includes several examples demonstrating different use cases, located in the `examples` folder. The structure is as follows:
 
-- **Materials Discovery**: Accelerating the discovery of new materials with desired properties by focusing on compositions and processing conditions that are most promising.
-- **Chemical Synthesis Optimization**: Identifying optimal reaction conditions (e.g., temperature, catalysts, solvent types) that maximize yield or selectivity.
-- **Nanomaterial Design**: Guiding the synthesis of nanoparticles with specific sizes and shapes by selecting experimental parameters that influence these attributes.
-- **Catalyst Development**: Optimizing catalyst formulations by exploring combinations of metals and supports that yield the highest activity.
-- **Battery Materials Research**: Investigating electrode materials with better performance by efficiently sampling the compositional space.
+```
+├── README.md
+├── active_sampler
+│   ├── __init__.py
+│   ├── core.py
+│   └── utils.py
+├── examples
+│   ├── example1_LARP
+│   │   ├── example1.py
+│   │   ├── input.csv
+│   │   ├── selected_samples_LARP.csv
+│   │   └── selected_samples_LARP.txt
+│   ├── example2_PhobicSurfaces
+│   │   ├── example2.py
+│   │   ├── input.csv
+│   │   ├── selected_samples_PhobicSurfaces.csv
+│   │   └── selected_samples_PhobicSurfaces.txt
+│   ├── example3_BatteryOptimization
+│   │   ├── example3.py
+│   │   ├── input.csv
+│   │   ├── selected_samples_BatteryOptimization.csv
+│   │   └── selected_samples_BatteryOptimization.txt
+│   └── example4_ProcessingAndConstraints
+│       ├── example4.py
+│       ├── input.csv
+│       ├── selected_samples_LARP_advanced_features.csv
+│       └── selected_samples_LARP_advanced_features.txt
+```
 
-## Conclusion
+Each example folder contains:
 
-ActiveSampler provides a comprehensive and flexible framework for active learning in experimental sciences. By intelligently selecting experiments based on a combination of objectives, uncertainties, and entropy gain, it helps researchers in chemistry and materials science to optimize their experimental efforts. The package's integration of machine learning models, statistical methods, and domain-specific constraints makes it a powerful tool for accelerating discovery and innovation.
+-   `example[N].py`: The Python script implementing the active learning workflow.
+-   `input.csv`: The input data used for the example.
+> Pre-generated output files are provided for each example:
+-   `selected_samples_[sufix].csv`:  The CSV file with the selected samples.
+-   `selected_samples_[sufix].txt`: The text file with the selected samples and run information.
 
----
+Here's a breakdown of each example:
 
-**Note**: Users are encouraged to adapt the components of ActiveSampler to their specific experimental setups. The package is designed to be extensible, allowing for the incorporation of additional models, custom uncertainty estimation methods, and tailored acquisition functions.
+- **`example1_LARP`**: A basic example focused on optimizing a **LARP (Ligand-Assisted Reprecipitation)** synthesis. It uses a single classification target (`structural_response`) to predict the structural outcome of the synthesis.
+
+- **`example2_PhobicSurfaces`**: This example deals with predicting the **contact angle** of surfaces, a regression problem. It also demonstrates the use of categorical features (`metal_precursor`, `surface_coating_material`).
+
+- **`example3_BatteryOptimization`**: A more complex, multi-output example focused on **battery material optimization**. It involves multiple regression targets (specific capacity, capacity retention, etc.) and uses custom objective and uncertainty functions to guide the selection process.  It also uses categorical features.
+
+- **`example4_ProcessingAndConstraints`**: This example showcases advanced features like **custom grid points** (restricting the sampling space for certain variables), **variable constraints** (ensuring logical relationships between variables), and more detailed data preprocessing options. It uses a combination of classification and regression targets.
+
+Run them directly (e.g., `python example1_LARP/example1.py`) after ensuring the `active_sampler` package is installed and the `input.csv` files are present.
+
+## Contributing
+
+Contributions are welcome! Please submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Contact
+
+For questions or issues, please contact [rogeriog.em@gmail.com].

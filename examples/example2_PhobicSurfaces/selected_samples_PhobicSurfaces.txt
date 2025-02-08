@@ -1,0 +1,34 @@
+
+=== Basic info on the run ===
+Grid size: 96
+considers all possible sampling points based on user data and settings.
+
+Initial training set size: 25
+number of sampling points which target properties were measured.
+
+Alpha (weight for objective): 0.25
+Beta (weight for uncertainty): 0.25
+Gamma (weight for diversity): 0.5
+Alpha encourages sampling to maximize the objective function (e.g. maximizing target probability).
+Beta encourages sampling in points of high uncertainty of the predictions.
+Gamma encourages variability in the selected samples.
+
+
+=== Selected Samples ===
+Ordered by each column sequentially
+--------------------------------------------------------------------------------
+heat_treatment_duration|metal_precursor|surface_coating_material
+----------------------------------------------------------------
+1|Cu|PTFE
+1|Mo|PTFE
+1|Ni|PTFE
+1|Ni|SiO2
+1|Ti|PTFE
+1|W |PTFE
+4|Al|PTFE
+4|Cu|PTFE
+4|Mo|PTFE
+4|Ni|PTFE
+4|Ti|PTFE
+4|W |PTFE
+

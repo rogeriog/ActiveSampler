@@ -1,0 +1,37 @@
+
+=== Basic info on the run ===
+Grid size: 10080
+considers all possible sampling points based on user data and settings.
+
+Initial training set size: 12
+number of sampling points which target properties were measured.
+
+Alpha (weight for objective): 0.4
+Beta (weight for uncertainty): 0.2
+Gamma (weight for diversity): 0.4
+Alpha encourages sampling to maximize the objective function (e.g. maximizing target probability).
+Beta encourages sampling in points of high uncertainty of the predictions.
+Gamma encourages variability in the selected samples.
+
+
+=== Selected Samples ===
+Ordered by each column sequentially
+--------------------------------------------------------------------------------
+cathode_quantity|electrolyte_volume|synthesis_temperature|heat_treatment_duration|cathode_material|electrolyte_type|coating_material
+------------------------------------------------------------------------------------------------------------------------------------
+50|110|500|5|LiFePO₄|LiPF₆ |ZrO₂ 
+50|110|600|2|LiCoO₂ |LiPF₆ |ZrO₂ 
+50|150|500|5|LiFePO₄|LiPF₆ |Al₂O₃
+50|150|600|2|LiFePO₄|LiPF₆ |Al₂O₃
+70|110|500|2|LiFePO₄|LiPF₆ |Al₂O₃
+70|110|500|5|LiFePO₄|LiPF₆ |ZrO₂ 
+70|110|500|5|LiFePO₄|LiTFSI|Al₂O₃
+70|110|580|5|LiFePO₄|LiPF₆ |Al₂O₃
+70|110|600|2|LiFePO₄|LiPF₆ |Al₂O₃
+70|110|600|5|LiCoO₂ |LiPF₆ |Al₂O₃
+70|110|600|5|LiFePO₄|LiTFSI|ZrO₂ 
+70|150|500|2|LiFePO₄|LiPF₆ |ZrO₂ 
+70|150|500|2|LiFePO₄|LiTFSI|ZrO₂ 
+70|150|600|2|LiCoO₂ |LiPF₆ |Al₂O₃
+70|150|600|5|LiFePO₄|LiPF₆ |ZrO₂ 
+

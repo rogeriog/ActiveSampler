@@ -1,0 +1,30 @@
+
+=== Basic info on the run ===
+Grid size: 270
+considers all possible sampling points based on user data and settings.
+
+Initial training set size: 18
+number of sampling points which target properties were measured.
+
+Alpha (weight for objective): 0.25
+Beta (weight for uncertainty): 0.25
+Gamma (weight for diversity): 0.5
+Alpha encourages sampling to maximize the objective function (e.g. maximizing target probability).
+Beta encourages sampling in points of high uncertainty of the predictions.
+Gamma encourages variability in the selected samples.
+
+
+=== Selected Samples ===
+Ordered by each column sequentially
+--------------------------------------------------------------------------------
+ligand_quantity|additive_quantity|halogen_alloy_quantity|additive_type|halogen_type_alloy
+-----------------------------------------------------------------------------------------
+0.0  |15 |3|HCl|Br
+0.0  |15 |4|HCl|Br
+5.0  |15 |3|HCl|Br
+400.0|15 |1|HCl|Br
+400.0|200|1|HCl|Br
+400.0|200|3|HCl|Br
+500.0|0  |1|0  |Br
+500.0|0  |3|0  |Br
+

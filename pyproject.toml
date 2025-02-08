@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "active_sampler"
+version = "0.1.0"
+authors = [
+  { name = "Rogerio Gouvea", email = "rogeriog.em@gmail.com" },
+]
+description = "An active learning package for experimental design in chemistry and materials science."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "numpy>=1.23.0",
+    "pandas>=2.2.3", 
+    "scikit-learn>=1.6.1", 
+    "scipy>=1.13.0", 
+    "xgboost>=2.1.4" 
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+active_sampler = ["*.csv"]

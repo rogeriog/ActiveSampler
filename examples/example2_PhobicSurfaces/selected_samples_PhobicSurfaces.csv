@@ -1,0 +1,13 @@
+heat_treatment_duration,metal_precursor,surface_coating_material
+1,Cu,PTFE
+1,Mo,PTFE
+1,Ni,PTFE
+1,Ni,SiO2
+1,Ti,PTFE
+1,W,PTFE
+4,Al,PTFE
+4,Cu,PTFE
+4,Mo,PTFE
+4,Ni,PTFE
+4,Ti,PTFE
+4,W,PTFE

@@ -1,4 +1,4 @@
-Sample,Ligand Type,Ligand Quantity,Additive Type,Additive Quantity,Halogen Type Alloy,Halogen Alloy Quantity,Temperature,Structural Response,Absorption,Particle Size,Unnamed: 11,Notes
+Sample,ligand_type,ligand_quantity,additive_type,additive_quantity,halogen_type_alloy,halogen_alloy_quantity,temperature,structure_type,optical_absorption,particle_size,Unnamed: 11,Notes
 1 sem AO,OLA,10.0,0,0,0,0,20,0,0.1494894,9.090909090909092,,"TIPO ESTRUTURA: 0 - caso nao forme nem dimero nem camadas, 1 - para dimero, 2 - para camadas"
 2,OLA,10.0,0,0,0,0,20,1,0.135336106,9.090909090909092,,
 3 OLA HI 230C,OLA,,0,0,0,0,230,2,0.135336106,100.0,,

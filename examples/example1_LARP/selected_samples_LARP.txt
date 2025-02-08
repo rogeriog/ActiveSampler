@@ -1,0 +1,94 @@
+
+=== Basic info on the run ===
+Grid size: 540
+considers all possible sampling points based on user data and settings.
+
+Initial training set size: 19
+number of sampling points which target properties were measured.
+
+Alpha (weight for objective): 0.25
+Beta (weight for uncertainty): 0.25
+Gamma (weight for diversity): 0.5
+Alpha encourages sampling to maximize the objective function (e.g. maximizing target probability).
+Beta encourages sampling in points of high uncertainty of the predictions.
+Gamma encourages variability in the selected samples.
+
+
+=== Selected Samples ===
+Ordered by each column sequentially
+--------------------------------------------------------------------------------
+ligand_quantity|ligand_ii_quantity|halogen_alloy_quantity|antisolvent_quantity
+------------------------------------------------------------------------------
+5.0  |0.0|4.0|9000.0
+5.0  |900.0|4.0|9000.0
+200.0|0.0|2.0|6000.0
+200.0|0.0|4.0|9000.0
+200.0|300.0|2.0|9000.0
+200.0|900.0|1.0|9000.0
+200.0|900.0|3.0|6000.0
+200.0|900.0|4.0|3000.0
+200.0|900.0|4.0|9000.0
+300.0|0.0|0.0|9000.0
+300.0|300.0|4.0|6000.0
+300.0|900.0|1.0|3000.0
+500.0|0.0|4.0|3000.0
+500.0|900.0|0.0|9000.0
+600.0|0.0|0.0|9000.0
+600.0|0.0|1.0|9000.0
+600.0|0.0|4.0|3000.0
+600.0|0.0|4.0|9000.0
+600.0|600.0|2.0|6000.0
+600.0|600.0|4.0|9000.0
+600.0|900.0|0.0|3000.0
+600.0|900.0|0.0|9000.0
+600.0|900.0|3.0|3000.0
+600.0|900.0|4.0|3000.0
+600.0|900.0|4.0|9000.0
+
+
+=== Basic info on the run ===
+Grid size: 540
+considers all possible sampling points based on user data and settings.
+
+Initial training set size: 19
+number of sampling points which target properties were measured.
+
+Alpha (weight for objective): 0.25
+Beta (weight for uncertainty): 0.25
+Gamma (weight for diversity): 0.5
+Alpha encourages sampling to maximize the objective function (e.g. maximizing target probability).
+Beta encourages sampling in points of high uncertainty of the predictions.
+Gamma encourages variability in the selected samples.
+
+
+=== Selected Samples ===
+Ordered by each column sequentially
+--------------------------------------------------------------------------------
+ligand_quantity|ligand_ii_quantity|halogen_alloy_quantity|antisolvent_quantity
+------------------------------------------------------------------------------
+5.0  |0.0|4.0|9000.0
+5.0  |900.0|4.0|9000.0
+200.0|0.0|2.0|6000.0
+200.0|0.0|4.0|9000.0
+200.0|300.0|2.0|9000.0
+200.0|900.0|1.0|9000.0
+200.0|900.0|3.0|6000.0
+200.0|900.0|4.0|3000.0
+200.0|900.0|4.0|9000.0
+300.0|0.0|0.0|9000.0
+300.0|300.0|4.0|6000.0
+300.0|900.0|1.0|3000.0
+500.0|0.0|4.0|3000.0
+500.0|900.0|0.0|9000.0
+600.0|0.0|0.0|9000.0
+600.0|0.0|1.0|9000.0
+600.0|0.0|4.0|3000.0
+600.0|0.0|4.0|9000.0
+600.0|600.0|2.0|6000.0
+600.0|600.0|4.0|9000.0
+600.0|900.0|0.0|3000.0
+600.0|900.0|0.0|9000.0
+600.0|900.0|3.0|3000.0
+600.0|900.0|4.0|3000.0
+600.0|900.0|4.0|9000.0
+
