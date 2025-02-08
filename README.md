@@ -38,7 +38,7 @@ This method is useful for development or if you want to modify the source code. 
 
 ### Example
 
-This is an example input data to select new data points in a LARP synthesis, full data on [examples/example1_LARP/input.csv](examples/example1_LARP/input.csv):
+This is an example input data with data points collected experimentally for a Ligand-assisted reprecipitation (LARP) synthesis, full data on [examples/example1_LARP/input.csv](examples/example1_LARP/input.csv):
 
 ```csv
 ligand_quantity,ligand_ii_quantity,halogen_alloy_quantity,antisolvent_quantity,structural_response
