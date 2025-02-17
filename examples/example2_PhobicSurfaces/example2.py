@@ -1,11 +1,5 @@
-import sys
-import os
-# Add the project root to the path so we can import the package
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, project_root)
 
 from active_sampler import active_sampling, load_and_preprocess_data
-
 
 filepath = 'input.csv'
 
