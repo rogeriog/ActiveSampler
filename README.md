@@ -1,4 +1,4 @@
-![ActiveSampler Logo](./logo.png)
+![ActiveSampler Logo](./logo.png){width=400}
 
 # ActiveSampler: An Active Learning Package for Experimental Design in Chemistry and Materials Science
 
