@@ -1,5 +1,6 @@
-
-<img src="./logo.png" style="width:30%; height:30%;">
+<p align="center">
+  <img src="./logo.png" style="width:30%; height:30%;">
+</p>
 
 # ActiveSampler: An Active Learning Package for Experimental Design in Chemistry and Materials Science
 
