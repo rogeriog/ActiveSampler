@@ -1,3 +1,5 @@
+![ActiveSampler Logo](./logo.png)
+
 # ActiveSampler: An Active Learning Package for Experimental Design in Chemistry and Materials Science
 
 ActiveSampler is a Python package designed to facilitate active learning workflows specifically tailored for experimental design in chemistry and materials science. By intelligently selecting the most informative data points for labeling, ActiveSampler aims to optimize experiments, reduce costs, and accelerate discovery in these fields.
