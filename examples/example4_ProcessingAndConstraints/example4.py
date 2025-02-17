@@ -43,7 +43,7 @@ variable_constraints = [
 ]
 
 # Define the objective function as a string
-obj_fn_str = 'structure_type_class_2' 
+obj_fn_str = 'structure_type_class_2 + norm_optical_absorption + norm_particle_size' 
 
 # Load and preprocess data
 X, y_dict = load_and_preprocess_data(
