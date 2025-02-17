@@ -18,7 +18,6 @@ target_types = {
 
 categorical_cols = ['metal_precursor', 'surface_coating_material']
 # Define the objective function as a string
-## will use the class probability for class 2 as the objective function 
 obj_fn_str = 'contact_angle' 
 
 # Load and preprocess data
