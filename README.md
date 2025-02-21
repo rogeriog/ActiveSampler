@@ -197,3 +197,7 @@ This project is licensed under the MIT License.
 ## Contact
 
 For questions or issues, please contact [rogeriog.em@gmail.com].
+
+
+## Acknowledgments
+- Brazilian funding agency CNPq for the financial support throughout this project.
